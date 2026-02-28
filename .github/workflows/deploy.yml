@@ -6,42 +6,19 @@ on:
 
 jobs:
   test-and-build:
-    runs-on: self-hosted # Gunakan runner yang sudah kamu setup di server
-
-    services:
-      postgres:
-        image: postgres:latest
-        env:
-          POSTGRES_USER: user_ppdb
-          POSTGRES_PASSWORD: password_ppdb
-          POSTGRES_DB: ppdb_db
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
+    runs-on: self-hosted # Menggunakan PC Windows Kantor
 
     steps:
-    - uses: actions/checkout@v4
-
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.10'
-
-    - name: Install dependencies
+    # Langkah 1: Langsung masuk ke folder project di Drive D dan paksa update kode
+    - name: Pull Kode Terbaru dari GitHub
       run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
+        cd /d D:\Projects\spmb-makassar-devops
+        git fetch --all
+        git reset --hard origin/main
 
-    - name: Lint with flake8
+    # Langkah 2: Biarkan Docker yang mengurus Python, Database, dan Build Image
+    - name: Rebuild & Restart Server
       run: |
-        pip install flake8
-        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-
-    # Bagian ini untuk build Docker Image (Langkah awal ke K8s)
-    - name: Build Docker Image
-      run: |
-        docker build -t spmb-api:latest .
+        cd /d D:\Projects\spmb-makassar-devops
+        docker-compose down
+        docker-compose up -d --build
