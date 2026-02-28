@@ -6,7 +6,7 @@ on:
 
 jobs:
   test-and-build:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted # Gunakan runner yang sudah kamu setup di server
 
     services:
       postgres:
