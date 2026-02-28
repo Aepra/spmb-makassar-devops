@@ -20,3 +20,13 @@ services:
     environment:
       - DATABASE_URL=postgresql://postgres:abelganteng@db:5432/postgres
     restart: always
+
+  tunnel:
+    container_name: cloudflared-tunnel
+    image: cloudflare/cloudflared:latest
+    restart: always
+    environment:
+      - TUNNEL_TOKEN=eyJhIjoiZWZmZGFmNDkzMmU3MThlYjJmNTY4NjRmN2IxNjAwYWMiLCJ0IjoiOTE2ZTdmOWYtOTFiMS00ZDNmLTlmZjYtMzU1NzkxN2I2OWM2IiwicyI6Ik1USXlOek5tWlRRdE9ESXlaQzAwWXpaaUxUZ3dNbU10TmpNelkySXhZbVUwTUdWaSJ9
+    command: tunnel --no-autoupdate run
+    depends_on:
+      - api

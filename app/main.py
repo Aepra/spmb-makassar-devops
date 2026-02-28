@@ -29,3 +29,8 @@ def read_data(
         "limit": limit,
         "data": rows
     }
+
+# Tambahkan ini di baris paling bawah main.py
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000)
