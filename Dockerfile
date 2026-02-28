@@ -1,18 +1,14 @@
-# 1. Gunakan image Python yang ringan
-FROM python:3.9-slim
+FROM python:3.10-slim
 
-# 2. Set folder kerja di dalam kontainer
 WORKDIR /app
 
-# 3. Copy file requirements dulu (agar build lebih cepat)
-COPY requirements.txt .
+# Install dependencies sistem untuk PostgreSQL
+RUN apt-get update && apt-get install -y libpq-dev gcc
 
-# 4. Install library yang dibutuhkan
+COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# 5. Copy seluruh kode aplikasi kita ke dalam kontainer
 COPY . .
 
-# 6. Perintah untuk menjalankan FastAPI
-# Kita pakai host 0.0.0.0 agar bisa diakses dari luar kontainer
+# Jalankan FastAPI di port 8000
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
