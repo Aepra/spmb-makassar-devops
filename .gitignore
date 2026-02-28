@@ -1,0 +1,4 @@
+data_spmb_83rb.csv
+venv/
+__pycache__/
+.env
