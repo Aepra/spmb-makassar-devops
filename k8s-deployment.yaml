@@ -1,0 +1,80 @@
+# ==========================================
+# 1. DATABASE CONFIGURATION (PostgreSQL)
+# ==========================================
+apiVersion: v1
+kind: Service
+metadata:
+  name: spmb-db-service
+spec:
+  ports:
+    - port: 5432
+  selector:
+    app: spmb-db
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spmb-db-deployment
+spec:
+  selector:
+    matchLabels:
+      app: spmb-db
+  template:
+    metadata:
+      labels:
+        app: spmb-db
+    spec:
+      containers:
+      - name: postgres
+        image: postgres:latest
+        env:
+        - name: POSTGRES_USER
+          value: "user_ppdb"
+        - name: POSTGRES_PASSWORD
+          value: "password_ppdb"
+        - name: POSTGRES_DB
+          value: "ppdb_db"
+        ports:
+        - containerPort: 5432
+
+---
+# ==========================================
+# 2. API CONFIGURATION (FastAPI)
+# ==========================================
+apiVersion: v1
+kind: Service
+metadata:
+  name: spmb-api-service
+spec:
+  selector:
+    app: spmb-api
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8000
+  type: NodePort # Agar bisa diakses oleh Cloudflare Tunnel
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spmb-api-deployment
+spec:
+  replicas: 2 # 2 Pasukan biar kalau 1 mati, API tetap online
+  selector:
+    matchLabels:
+      app: spmb-api
+  template:
+    metadata:
+      labels:
+        app: spmb-api
+    spec:
+      containers:
+      - name: spmb-api
+        image: spmb-api:latest # Pastikan kamu sudah build image ini
+        imagePullPolicy: Never # Pakai image lokal di PC kantor
+        ports:
+        - containerPort: 8000
+        env:
+        - name: DATABASE_URL
+          # Perhatikan: host-nya memakai nama service database di atas
+          value: "postgresql://user_ppdb:password_ppdb@spmb-db-service:5432/ppdb_db"
