@@ -1,0 +1,22 @@
+services:
+  db:
+    image: postgres:latest
+    container_name: spmb-db
+    environment:
+      POSTGRES_PASSWORD: abelganteng
+    ports:
+      - "5433:5432"
+    volumes:
+      - ./postgres_data:/var/lib/postgresql
+    restart: always
+
+  api:
+    build: .
+    container_name: spmb-api
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      - DATABASE_URL=postgresql://postgres:abelganteng@db:5432/postgres
+    restart: always

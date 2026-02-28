@@ -1,4 +1,6 @@
 data_spmb_83rb.csv
 venv/
 __pycache__/
+*.pyc
 .env
+postgres_data/

@@ -1,0 +1,12 @@
+🏛️ SPMB Makassar Data Pipeline & API EngineDevOps Internship Project @ Diskominfo Kota MakassarSistem otomatisasi pengolahan data PPDB/SPMB Kota Makassar dengan total 83.000+ records. Proyek ini mendemonstrasikan implementasi Zero Column Loss Ingestion dan Container Orchestration untuk kebutuhan Data Transparency di lingkungan pemerintahan.🚀 Fitur UtamaZero Column Loss: Migrasi data dari CSV ke PostgreSQL tanpa menghilangkan satu pun atribut/kolom asli (seperti koordinat, jarak, dan status pendaftaran).Automated Ingestion: Script Python cerdas dengan fitur chunking untuk menangani data raksasa tanpa membebani RAM laptop atau server kantor.FastAPI Backend: API berperforma tinggi dengan fitur Pagination untuk akses data yang efisien dan cepat bagi aplikasi Frontend (Next.js).Dockerized Infrastructure: Seluruh infrastruktur (Database & API) berjalan di dalam kontainer untuk konsistensi antar lingkungan (Laptop Rumah vs Server Kominfo).Secure Access: Terintegrasi dengan SSL Namecheap dan Cloudflare Tunnel untuk akses publik yang aman melalui domain abeldev.me.🏗️ Arsitektur FolderPlaintextspmb-makassar-devops/
+├── app/
+│   ├── main.py            # Endpoint API (FastAPI)
+│   └── database.py        # Konfigurasi Database & ORM
+├── scripts/
+│   └── ingest_csv.py      # Script migrasi data CSV ke SQL
+├── postgres_data/         # Volume data Database (Dihasilkan otomatis)
+├── Dockerfile             # Resep Container API
+├── docker-compose.yml     # Konfigurasi Multi-Container (DB & API)
+├── requirements.txt       # Daftar Library Python yang dibutuhkan
+└── data_spmb_83rb.csv     # Dataset utama (Diabaikan oleh Git untuk keamanan)
+🛠️ Panduan Instalasi & Menjalankan1. Persiapan EnvironmentPastikan Docker Desktop sudah terinstal dan berjalan di perangkat Anda.2. Kloning Repository & Setupgit clone https://github.com/USERNAME_KAMU/spmb-makassar-devops.gitcd spmb-makassar-devops3. Build & Run Infrastructure (Docker)Gunakan Docker Compose untuk menyalakan database PostgreSQL dan API secara otomatis di latar belakang:docker-compose up -d --build4. Ingest Data (Migrasi CSV ke PostgreSQL)Pastikan file data_spmb_83rb.csv sudah ada di folder utama proyek, lalu jalankan perintah berikut:pip install -r requirements.txtpython scripts/ingest_csv.py📡 Endpoint API (Testing)MethodEndpointFungsiGET/Cek status API & Informasi OwnerGET/data?skip=0&limit=100Mengambil data pendaftaran (Paginated)👨‍💻 AuthorAbel Eka PutraSistem Informasi - Universitas HasanuddinIntern @ DevOps Division, Diskominfo Makassa

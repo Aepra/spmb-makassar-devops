@@ -3,7 +3,7 @@ from sqlalchemy import create_engine
 import os
 
 # Konfigurasi - Sesuaikan dengan password yang kita buat tadi
-DB_URL = 'postgresql://postgres:abelganteng@localhost:5432/postgres'
+DB_URL = 'postgresql://postgres:abelganteng@localhost:5433/postgres'
 CSV_FILE = 'data_spmb_83rb.csv'
 
 def start_ingestion():
