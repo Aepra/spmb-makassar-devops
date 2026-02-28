@@ -7,7 +7,7 @@ services:
     ports:
       - "5433:5432"
     volumes:
-      - ./postgres_data:/var/lib/postgresql
+      - ./postgres_data:/var/lib/postgresql/data # Path standar Postgres agar data awet
     restart: always
 
   api:
@@ -20,6 +20,12 @@ services:
     environment:
       - DATABASE_URL=postgresql://postgres:abelganteng@db:5432/postgres
     restart: always
+    # Menunggu API benar-benar 'siap' sebelum dianggap 'Up'
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8000/ || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   tunnel:
     container_name: cloudflared-tunnel
@@ -29,4 +35,5 @@ services:
       - TUNNEL_TOKEN=eyJhIjoiZWZmZGFmNDkzMmU3MThlYjJmNTY4NjRmN2IxNjAwYWMiLCJ0IjoiOTE2ZTdmOWYtOTFiMS00ZDNmLTlmZjYtMzU1NzkxN2I2OWM2IiwicyI6Ik1USXlOek5tWlRRdE9ESXlaQzAwWXpaaUxUZ3dNbU10TmpNelkySXhZbVUwTUdWaSJ9
     command: tunnel --no-autoupdate run
     depends_on:
-      - api
+      api:
+        condition: service_healthy # Tunnel hanya menyambung kalau API sudah sehat

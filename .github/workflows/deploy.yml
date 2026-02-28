@@ -6,7 +6,7 @@ on:
 
 jobs:
   deploy-to-server:
-    runs-on: self-hosted # Menggunakan PC Windows Kantor Diskominfo
+    runs-on: self-hosted # PC Kantor Diskominfo
 
     steps:
     - name: 1. Izin Akses Folder Git (Safe Directory)
@@ -20,9 +20,9 @@ jobs:
         git fetch --all
         git reset --hard origin/main
 
-    - name: 3. Rebuild & Restart Docker Container
+    - name: 3. Smart Rebuild (Hanya Update API)
       shell: cmd
       run: |
         cd /d D:\Projects\spmb-makassar-devops
-        docker-compose down
-        docker-compose up -d --build
+        # Perintah ini hanya merefresh container API tanpa mematikan DB
+        docker-compose up -d --build --no-deps api
