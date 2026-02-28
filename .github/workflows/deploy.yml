@@ -6,18 +6,18 @@ on:
 
 jobs:
   test-and-build:
-    runs-on: self-hosted # Menggunakan PC Windows Kantor
+    runs-on: self-hosted
 
     steps:
-    # Langkah 1: Langsung masuk ke folder project di Drive D dan paksa update kode
     - name: Pull Kode Terbaru dari GitHub
+      shell: cmd
       run: |
         cd /d D:\Projects\spmb-makassar-devops
         git fetch --all
         git reset --hard origin/main
 
-    # Langkah 2: Biarkan Docker yang mengurus Python, Database, dan Build Image
     - name: Rebuild & Restart Server
+      shell: cmd
       run: |
         cd /d D:\Projects\spmb-makassar-devops
         docker-compose down
