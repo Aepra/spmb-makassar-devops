@@ -29,7 +29,7 @@ def startup_event():
 # --- ENDPOINT API ---
 @app.get("/")
 def root():
-    return {"message": "API PPDB Makassar Aktif!", "owner": "Abel Eka Putra", "github": "https://github.com/Aepra"}
+    return {"message": "API PPDB Makassar Aktif!", "owner": "Abel Eka Putra", "github": "https://github.com/Aepra", "tes": "berhasil mengubah"}
 
 @app.get("/data")
 def read_data(
