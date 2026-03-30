@@ -34,7 +34,7 @@ def root():
 @app.get("/data")
 def read_data(
     skip: int = 0, 
-    limit: int = 100, 
+    limit: int = 100000, 
     db: Session = Depends(get_db)
 ):
     # Mengambil data dengan manual query agar aman
